@@ -35,6 +35,10 @@ export default class MediaWrapper extends Component {
     this.player && this.player.pause();
   }
 
+  seekTo = (time) => {
+    this.player && this.player.seekTo(time);
+  }
+
   setPlayerEvents = () => {
     const { autoPlay } = this.props;
 
@@ -44,6 +48,7 @@ export default class MediaWrapper extends Component {
         ended: false
       })
       this.props.onPlay && this.props.onPlay();
+      this.getTime();
     }
 
     this.player.onpause = () => {
@@ -51,6 +56,7 @@ export default class MediaWrapper extends Component {
         playing: false
       })
       this.props.onPause && this.props.onPause();
+      this.stopGettingTime();
     }
 
     this.player.onended = () => {
@@ -62,35 +68,37 @@ export default class MediaWrapper extends Component {
       this.props.onEnd && this.props.onEnd();
     }
 
-    this.player.ontimeupdate = () => {
-      this.setState({
-        time: this.player.currentTime
-      })
-    }
-
     this.player.oncanplay = () => {
-      this.setState({
-        ...initialState,
-      })
       autoPlay && this.player.play();
-      console.log('abcde')
       this.getDuration();
     }
   }
 
+  getTime = () => {
+    this.animationFrame = requestAnimationFrame(this.getTime);
+    this.setState({
+      time: this.player.currentTime,
+      duration: this.player.duration
+    })
+  }
+
+  stopGettingTime = () => {
+    cancelAnimationFrame(this.animationFrame);
+  };
+
   getDuration = () => {
-    const getPlayerDurationInterval = setInterval(() => {
+    const getDurationInterval = setInterval(() => {
       if (this.player && this.player.duration > 0) {
         this.setState({
           duration: this.player.duration
-        })
-        clearInterval(getPlayerDurationInterval);
+        });
+        clearInterval(getDurationInterval);
       }
     }, 100);
   }
 
   componentDidMount() {
-    const { url, mediaEl, autoPlay } = this.props;
+    const { url, mediaEl } = this.props;
     mediaEl.init(this.refs.mediaPlayer, url)
       .then(player => {
         this.player = player;
@@ -103,7 +111,9 @@ export default class MediaWrapper extends Component {
     const { url } = this.props;
     if (url !== prevUrl) {
       this.player.src = url;
-      this.getDuration();
+      this.setState({
+        ...initialState
+      })
     }
   }
 
@@ -120,7 +130,8 @@ export default class MediaWrapper extends Component {
         playing,
         ended,
         play: this.play,
-        pause: this.pause
+        pause: this.pause,
+        seekTo: this.seekTo
       }}>
         <MediaPlayer ref="mediaPlayer" />
         {
