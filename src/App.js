@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import ReactCroppie from './ReactCroppie';
 import MediaWrapper from './media/MediaWrapper';
 import AudioPlayer from './media/AudioPlayer';
+import Wrapper from './media/Wrapper';
+import audioPlayer from './media/getAudioPlayer';
+import youtubePlayer from './media/getYoutubePlayer';
 
 class App extends Component {
   state = {
     url: "https://c1.staticflickr.com/4/3677/13545844805_1fe22f9631_k.jpg",
     croppieStyle: null,
-    videoUrl: "M7lc1UVf-VE",
+    videoUrl: "ssVvkfcL9HI",
   }
 
   crop = () => {
@@ -51,7 +54,7 @@ class App extends Component {
 
   render() {
     const { url, croppieStyle, videoUrl } = this.state;
-    console.log(videoUrl)
+    // console.log(videoUrl)
     return (
       <div className="App">
         {/* <ReactCroppie
@@ -61,12 +64,18 @@ class App extends Component {
           croppieOptions={{ showZoomer: false }}
         />
         <button onClick={this.crop}>crop</button> */}
-        <MediaWrapper url={videoUrl} videoEl={this.refs.youtubePlayer} type="youtube" >
+        {/* <MediaWrapper url={videoUrl} videoEl={this.refs.youtubePlayer} type="youtube" >
           <div ref="youtubePlayer" />
           <AudioPlayer />
-        </MediaWrapper>
+        </MediaWrapper> */}
+        <Wrapper url={videoUrl} mediaEl={youtubePlayer} >
+          <AudioPlayer />
+        </Wrapper>
+        {/* <Wrapper url={'https://vnno-zn-5-tf-mp3-s1-zmp3.zadn.vn/8605e64aec0e05505c1f/7233897931381552945?authen=exp=1548771267~acl=/8605e64aec0e05505c1f/*~hmac=f863ad06b94832cb1bd83d93d5ba7aa4'} mediaEl={audioPlayer} >
+          <AudioPlayer />
+        </Wrapper> */}
         <br />
-        <button onClick={() => this.setState({ videoUrl: 'ZWzEh1Y9x7A'})}>change video</button>
+        <button onClick={() => this.setState({ videoUrl: 'Sv6dMFF_yts'})}>change video</button>
       </div>
     );
   }
