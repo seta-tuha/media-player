@@ -22,15 +22,12 @@ export default {
               switch (event.data) {
                 case window.YT.PlayerState.PLAYING:
                   youtubePlayer.onplay && youtubePlayer.onplay();
-                  // getTime();
                   break;
                 case window.YT.PlayerState.PAUSED:
                   youtubePlayer.onpause && youtubePlayer.onpause();
-                  // stopGettingTime();
                   break;
                 case window.YT.PlayerState.ENDED:
                   youtubePlayer.onended && youtubePlayer.onended();
-                  // stopGettingTime();
                   break;
                 case window.YT.PlayerState.CUED:
                   youtubePlayer.play && youtubePlayer.play();
@@ -46,14 +43,6 @@ export default {
         youtubePlayer.pause = () => player.pauseVideo();
         youtubePlayer.stop = () => player.stopVideo();
         youtubePlayer.seekTo = (time) => player.seekTo(time);
-        // const getTime = () => {
-        //   animationFrame = requestAnimationFrame(getTime);
-        //   youtubePlayer.currentTime = player.getCurrentTime();
-        //   youtubePlayer.ontimeupdate();
-        // }
-        // const stopGettingTime = () => {
-        //   cancelAnimationFrame(animationFrame);
-        // };
         const pollDuration = () => {
           const durationFrame = requestAnimationFrame(pollDuration);
           if (youtubePlayer && youtubePlayer.duration) {
